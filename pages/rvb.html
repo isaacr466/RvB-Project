@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>F4R | RvB Talk</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        .talk-container {
+            width: 90%;
+            max-width: 900px;
+            margin: 80px auto;
+            position: relative;
+            z-index: 5;
+        }
+
+        .talk-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .talk-subtitle {
+            text-align: center;
+            color: #999;
+            letter-spacing: 2px;
+            margin-bottom: 35px;
+        }
+
+        .comment-form {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #444;
+            border-left: 4px solid #b00000;
+            padding: 25px;
+            margin-bottom: 35px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            box-sizing: border-box;
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            margin-bottom: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        .comment-form textarea {
+            height: 120px;
+            resize: vertical;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: #b00000;
+        }
+
+        .post-button {
+            background: #111;
+            color: white;
+            border: 1px solid #555;
+            border-left: 3px solid #b00000;
+            padding: 12px 25px;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        .post-button:hover {
+            background: #b00000;
+            transform: translateX(5px);
+        }
+
+        .comments-title {
+            color: white;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .comment {
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #333;
+            border-left: 3px solid #b00000;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+
+        .comment-user {
+            color: #e00000;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .comment-message {
+            color: #ddd;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+        }
+
+        .comment-date {
+            color: #666;
+            font-size: 12px;
+            margin-top: 12px;
+        }
+
+        .status {
+            margin-top: 12px;
+            color: #999;
+            font-size: 13px;
+        }
+
+        .admin-section {
+            margin-bottom: 35px;
+        }
+
+        .admin-input {
+            width: 100%;
+            box-sizing: border-box;
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            margin-bottom: 12px;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-input:focus {
+            outline: none;
+            border-color: #b00000;
+        }
+
+        .login-box {
+            margin-top: 15px;
+            background: rgba(10, 10, 10, 0.95);
+            border: 1px solid #333;
+            border-left: 3px solid #b00000;
+            padding: 20px;
+            max-width: 500px;
+        }
+
+        .delete-button {
+            margin-top: 15px;
+            border-left: 3px solid #ff0000;
+        }
+
+        .delete-button:hover {
+            background: #700000;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 700px) {
+            .talk-container {
+                width: 92%;
+                margin-top: 40px;
+            }
+
+            .comment-form {
+                padding: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-effects">
+        <img src="../images/background.png" alt="" class="flower-bg">
+        <div class="grid"></div>
+        <div class="red-glow"></div>
+    </div>
+
+    <img src="../images/sharkface.png" alt="" class="armor-bg">
+    <img src="../images/character.png" alt="" class="character-left">
+
+    <div class="talk-container">
+
+        <a href="../index.html" class="back-button">← BACK</a>
+
+        <p class="classified">// You can chat about anything here! //</p>
+
+        <h1 class="talk-title">RvB TALK</h1>
+
+        <p class="talk-subtitle">
+            TALK ABOUT RED VS. BLUE
+        </p>
+
+        <!-- COMMENT FORM -->
+
+        <div class="comment-form">
+
+            <input
+                type="text"
+                id="username"
+                placeholder="YOUR NAME"
+                maxlength="30"
+            >
+
+            <textarea
+                id="message"
+                placeholder="WRITE YOUR MESSAGE..."
+                maxlength="500"
+            ></textarea>
+
+            <button class="post-button" id="postButton">
+                POST COMMENT
+            </button>
+
+            <div class="status" id="status"></div>
+
+        </div>
+
+
+        <!-- ADMIN LOGIN -->
+
+        <div class="admin-section">
+
+            <button class="post-button" id="loginButton">
+                ADMIN LOGIN
+            </button>
+
+            <button
+                class="post-button"
+                id="logoutButton"
+                style="display: none;"
+            >
+                LOG OUT
+            </button>
+
+
+            <div
+                class="login-box"
+                id="loginBox"
+                style="display: none;"
+            >
+
+                <input
+                    class="admin-input"
+                    type="email"
+                    id="adminEmail"
+                    placeholder="ADMIN EMAIL"
+                >
+
+                <input
+                    class="admin-input"
+                    type="password"
+                    id="adminPassword"
+                    placeholder="ADMIN PASSWORD"
+                >
+
+                <button
+                    class="post-button"
+                    id="submitLogin"
+                >
+                    LOGIN
+                </button>
+
+                <div
+                    class="status"
+                    id="loginStatus"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <!-- COMMENTS -->
+
+        <h2 class="comments-title">
+            // RECENT CHATS //
+        </h2>
+
+        <div id="comments">
+            Loading comments...
+        </div>
+
+    </div>
+
+
+    <!-- SUPABASE -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <script>
+
+        const SUPABASE_URL =
+            "https://knrycgroedcqmwupmrzf.supabase.co";
+
+        const SUPABASE_KEY =
+            "sb_publishable_H0JT1jdvE8zyHbbj5D2DPA_ax6dob4G";
+
+
+        const { createClient } = supabase;
+
+        const db = createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+        /* COMMENT ELEMENTS */
+
+        const usernameInput =
+            document.getElementById("username");
+
+        const messageInput =
+            document.getElementById("message");
+
+        const postButton =
+            document.getElementById("postButton");
+
+        const commentsContainer =
+            document.getElementById("comments");
+
+        const status =
+            document.getElementById("status");
+
+
+        /* ADMIN ELEMENTS */
+
+        const loginButton =
+            document.getElementById("loginButton");
+
+        const logoutButton =
+            document.getElementById("logoutButton");
+
+        const loginBox =
+            document.getElementById("loginBox");
+
+        const submitLogin =
+            document.getElementById("submitLogin");
+
+        const adminEmail =
+            document.getElementById("adminEmail");
+
+        const adminPassword =
+            document.getElementById("adminPassword");
+
+        const loginStatus =
+            document.getElementById("loginStatus");
+
+
+        /* LOAD COMMENTS */
+
+        async function loadComments() {
+
+            const { data, error } =
+                await db
+                    .from("comments")
+                    .select("*")
+                    .order("created_at", {
+                        ascending: false
+                    });
+
+
+            if (error) {
+
+                commentsContainer.innerHTML =
+                    "Unable to load comments.";
+
+                console.error(error);
+
+                return;
+            }
+
+
+            if (!data || data.length === 0) {
+
+                commentsContainer.innerHTML =
+                    "<p>No comments yet. Be the first.</p>";
+
+                return;
+            }
+
+
+            commentsContainer.innerHTML = "";
+
+
+            /* CHECK ADMIN LOGIN */
+
+            const {
+                data: { session }
+            } = await db.auth.getSession();
+
+
+            data.forEach(function(comment) {
+
+                const commentBox =
+                    document.createElement("div");
+
+                commentBox.className =
+                    "comment";
+
+
+                /* USERNAME */
+
+                const username =
+                    document.createElement("div");
+
+                username.className =
+                    "comment-user";
+
+                username.textContent =
+                    comment.username;
+
+
+                /* MESSAGE */
+
+                const message =
+                    document.createElement("div");
+
+                message.className =
+                    "comment-message";
+
+                message.textContent =
+                    comment.message;
+
+
+                /* DATE */
+
+                const date =
+                    document.createElement("div");
+
+                date.className =
+                    "comment-date";
+
+                date.textContent =
+                    new Date(
+                        comment.created_at
+                    ).toLocaleString();
+
+
+                commentBox.appendChild(username);
+
+                commentBox.appendChild(message);
+
+                commentBox.appendChild(date);
+
+
+                /* DELETE BUTTON */
+
+                if (session) {
+
+                    const deleteButton =
+                        document.createElement("button");
+
+                    deleteButton.className =
+                        "post-button delete-button";
+
+                    deleteButton.textContent =
+                        "DELETE";
+
+
+                    deleteButton.addEventListener(
+                        "click",
+                        async function() {
+
+                            const confirmed =
+                                confirm(
+                                    "Delete this comment?"
+                                );
+
+
+                            if (!confirmed) {
+                                return;
+                            }
+
+
+                            const { error } =
+                                await db
+                                    .from("comments")
+                                    .delete()
+                                    .eq(
+                                        "id",
+                                        comment.id
+                                    );
+
+
+                            if (error) {
+
+                                console.error(error);
+
+                                alert(
+                                    "Unable to delete comment."
+                                );
+
+                                return;
+                            }
+
+
+                            loadComments();
+                        }
+                    );
+
+
+                    commentBox.appendChild(
+                        deleteButton
+                    );
+                }
+
+
+                commentsContainer.appendChild(
+                    commentBox
+                );
+
+            });
+
+        }
+
+
+        /* POST COMMENT */
+
+        postButton.addEventListener(
+            "click",
+            async function() {
+
+                const username =
+                    usernameInput.value.trim();
+
+                const message =
+                    messageInput.value.trim();
+
+
+                if (!username || !message) {
+
+                    status.textContent =
+                        "ENTER A NAME AND MESSAGE.";
+
+                    return;
+                }
+
+
+                postButton.disabled = true;
+
+                status.textContent =
+                    "POSTING...";
+
+
+                const { error } =
+                    await db
+                        .from("comments")
+                        .insert([
+                            {
+                                username: username,
+                                message: message
+                            }
+                        ]);
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    status.textContent =
+                        "ERROR POSTING COMMENT.";
+
+                    postButton.disabled = false;
+
+                    return;
+                }
+
+
+                usernameInput.value = "";
+
+                messageInput.value = "";
+
+
+                status.textContent =
+                    "COMMENT POSTED.";
+
+
+                postButton.disabled = false;
+
+
+                loadComments();
+
+            }
+        );
+
+
+        /* SHOW LOGIN BOX */
+
+        loginButton.addEventListener(
+            "click",
+            function() {
+
+                if (
+                    loginBox.style.display ===
+                    "none"
+                ) {
+
+                    loginBox.style.display =
+                        "block";
+
+                } else {
+
+                    loginBox.style.display =
+                        "none";
+                }
+
+            }
+        );
+
+
+        /* ADMIN LOGIN */
+
+        submitLogin.addEventListener(
+            "click",
+            async function() {
+
+                const email =
+                    adminEmail.value.trim();
+
+                const password =
+                    adminPassword.value;
+
+
+                if (!email || !password) {
+
+                    loginStatus.textContent =
+                        "ENTER YOUR EMAIL AND PASSWORD.";
+
+                    return;
+                }
+
+
+                loginStatus.textContent =
+                    "LOGGING IN...";
+
+
+                const { error } =
+                    await db.auth.signInWithPassword({
+
+                        email: email,
+
+                        password: password
+
+                    });
+
+
+                if (error) {
+
+                    console.error(error);
+
+                    loginStatus.textContent =
+                        "LOGIN FAILED.";
+
+                    return;
+                }
+
+
+                loginStatus.textContent =
+                    "ADMIN LOGIN SUCCESSFUL.";
+
+
+                loginBox.style.display =
+                    "none";
+
+
+                loginButton.style.display =
+                    "none";
+
+
+                logoutButton.style.display =
+                    "inline-block";
+
+
+                adminEmail.value = "";
+
+                adminPassword.value = "";
+
+
+                loadComments();
+
+            }
+        );
+
+
+        /* LOG OUT */
+
+        logoutButton.addEventListener(
+            "click",
+            async function() {
+
+                await db.auth.signOut();
+
+
+                logoutButton.style.display =
+                    "none";
+
+
+                loginButton.style.display =
+                    "inline-block";
+
+
+                loadComments();
+
+            }
+        );
+
+
+        /* KEEP LOGIN STATE */
+
+        db.auth.onAuthStateChange(
+            function() {
+
+                loadComments();
+
+            }
+        );
+
+
+        /* LOAD COMMENTS ON START */
+
+        loadComments();
+
+    </script>
+
+</body>
+</html>
